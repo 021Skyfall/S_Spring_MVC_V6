@@ -1,5 +1,8 @@
 package IO.SampleWeek3_Transaction.member.service;
 
+import IO.SampleWeek3_Transaction.backup.entity.BackupMember;
+import IO.SampleWeek3_Transaction.backup.repository.BackupMemberRepository;
+import IO.SampleWeek3_Transaction.backup.service.BackupMemberService;
 import IO.SampleWeek3_Transaction.exception.BusinessLogicException;
 import IO.SampleWeek3_Transaction.exception.ExceptionCode;
 import IO.SampleWeek3_Transaction.member.entity.Member;
@@ -19,16 +22,17 @@ import java.util.Optional;
 @AllArgsConstructor
 public class MemberService {
     private final MemberRepository memberRepository;
+    private final BackupMemberRepository backupMemberRepository;
+    private final BackupMemberService backupMemberService;
 
     public Member createMember(Member member) {
         // 이미 등록된 이메일인지 확인
         verifyExistsEmail(member.getEmail());
-
         Member resultMember = memberRepository.save(member);
 
-//        if (true) {
-//            throw new RuntimeException("Rollback test");
-//        }
+        backupMemberService.createBackupMember(new BackupMember(member.getEmail(),
+                member.getName(),member.getPhone()));
+
         return resultMember;
     }
 

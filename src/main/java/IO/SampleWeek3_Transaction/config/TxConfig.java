@@ -1,4 +1,4 @@
-package IO.SampleWeek3_Transaction.advice;
+package IO.SampleWeek3_Transaction.config;
 
 import lombok.AllArgsConstructor;
 import org.springframework.aop.Advisor;
